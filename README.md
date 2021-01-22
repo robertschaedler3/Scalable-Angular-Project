@@ -42,8 +42,8 @@ Each module should contain a base component *(similar to app.module)* to be used
     |-- main
         |-- components
             |-- [+] footer
-            |-- [+] header
             |-- [+] sidebar
+            |-- [+] toolbar
             |-- ...
         |-- pages
             |-- main-page
