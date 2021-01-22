@@ -122,3 +122,9 @@ The global styles for the project are placed in a `scss` folder under `assets`.
 ```
 
 All scss partials are placed within the `core` folder, with additional structure to support custom material theming, global varibles, and mixins.
+
+## Resources
+
+- [Angular Style Guide](https://angular.io/guide/styleguide)
+- [Mathis Garberg](https://itnext.io/choosing-a-highly-scalable-folder-structure-in-angular-d987de65ec7)
+- [Tom Cowley](https://medium.com/@motcowley/angular-folder-structure-d1809be95542)
