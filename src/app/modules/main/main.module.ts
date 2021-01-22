@@ -7,9 +7,12 @@ import { MainComponent } from './main.component';
 // Components
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 
+// Pages
+import { MainPageComponent } from './pages/main-page/main-page.component';
+
 
 @NgModule({
-  declarations: [MainComponent, ToolbarComponent],
+  declarations: [MainComponent, ToolbarComponent, MainPageComponent],
   imports: [CommonModule, MainRoutingModule],
 })
 export class MainModule {}
