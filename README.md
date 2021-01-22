@@ -1,27 +1,124 @@
-# ScalableAngularProject
+# Scalable Angular Project
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.6.
+A highly scalable Angular project structure built for short-term clarity of implmenation with the goal of structural longevity dervied from the [Angular Style Guide](https://angular.io/guide/styleguide).
 
-## Development server
+> *"Structure the app such that you can locate code quickly"* 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+> *"Have a near-term view of implementation and a long-term vision"*
 
-## Code scaffolding
+```
+|-- app
+    |-- modules
+        |-- main
+            |-- [+] components
+            |-- [+] pages
+            |-- main-routing.module.ts
+            |-- main.component.ts|html|scss|spec
+            |-- main.module.ts
+    |-- core
+        |-- [+] authentication
+        |-- [+] guards
+        |-- [+] http
+        |-- [+] interceptors
+        |-- [+] services
+        |-- core.module.ts
+    |-- shared
+        |-- [+] components
+        |-- [+] directives
+        |-- [+] pipes
+        |-- [+] models
+|-- assets
+    |-- scss
+        |-- [+] core
+        |-- core.scss
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Modules
 
-## Build
+Each module should contain a base component *(similar to app.module)* to be used as the layout/entry-point into the module. Additional pages and components are also declared within each module if neccessary. 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+|-- modules
+    |-- main
+        |-- components
+            |-- [+] footer
+            |-- [+] header
+            |-- [+] sidebar
+            |-- ...
+        |-- pages
+            |-- main-page
+                |-- main-page.component.ts|html|scss|spec
+        |-- main.component.ts|html|scss|spec
+        |-- main-routing.module.ts
+        |-- main.module.ts
+```
 
-## Running unit tests
+This structure allows for modular routing whereby each module defines its own routing logic:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```Typescript
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-## Running end-to-end tests
+// The layout/entry-point to the module
+import { MainComponent } from './main.component'; 
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+// Page-component imports...
 
-## Further help
+const routes: Routes = [
+  {
+    path: '',
+    component: MainComponent,
+    children: [
+      // Child page-components
+    ],
+  },
+];
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class DashboardRoutingModule { }
+```
+
+## Core Module
+
+The `CoreModule` takes on the role of the root `AppModule` however it is not the module which gets bootstrapped by Angular at run-time. The `CoreModule` should only contain singleton services, universal components, and other features that require only a single instance per application. This is enforced further by an import guard (`ensureModuleLoadedOnceGuard.ts`).
+
+```
+|-- core
+    |-- [+] authentication
+    |-- [+] guards
+    |-- [+] http
+    |-- [+] interceptors
+    |-- [+] services
+    |-- core.module.ts
+    |-- ensureModuleLoadedOnceGuard.ts
+```
+
+## Shared Module
+
+The `SharedModule` contains any shared components, services, etc. The `SharedModule` can be imported in any other module when those items will be re-used. When contriburting to the module, each contributed item **should not** have any dependency to the rest of the application.
+
+```
+|-- shared
+    |-- [+] components
+    |-- [+] directives
+    |-- [+] models
+    |-- [+] pipes
+```
+
+## Styling
+
+The global styles for the project are placed in a `scss` folder under `assets`.
+
+```
+|-- scss
+    |-- [+] core
+        |-- [+] mixins
+        |-- [+] variables
+        |-- ...
+    |-- core.scss
+```
+
+All scss partials are placed within the `core` folder, with additional structure to support custom material theming, global varibles, and mixins.
